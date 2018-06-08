@@ -1,17 +1,9 @@
--- This file was automatically generated for the LuaDist project.
-
 package = "datafile"
-version = "0.3-1"
--- LuaDist source
+version = "0.4-1"
 source = {
-  tag = "0.3-1",
-  url = "git://github.com/LuaDist-testing/datafile.git"
+   url = "git://github.com/hishamhm/datafile.git",
+   tag = "v0.4"
 }
--- Original source
--- source = {
---    url = "git://github.com/hishamhm/datafile.git",
---    tag = "v0.3"
--- }
 description = {
    summary = "A library for handling paths when loading data files",
    detailed = [[
