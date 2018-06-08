@@ -2,13 +2,29 @@
 -- utilities for the implementation of datafile modules
 local util = {}
 
-function util.try_dirs(dirs, file, mode, noslash)
+-- cache separator
+local sep
+
+function util.try_dirs(dirs, file, mode)
+   if not sep then
+      if (package.config and package.config:sub(1,1) == "\\") or package.path:match("\\") then
+         sep = "\\"
+      else
+         sep = "/"
+      end
+   end
    local tried = {}
    for _, dir in ipairs(dirs) do
-      local path = (dir..(noslash and "" or "/")..file):gsub("/+", "/")
-      local file = io.open(path, mode)
-      if file then return file, path end
-      tried[#tried+1] = "no file '"..path.."'"
+      local path
+      if dir:sub(-1) == "|" then
+         path = (dir:sub(1,-2)..file)
+      else
+         path = (dir..sep..file)
+      end
+      path = path:gsub(sep.."+", sep)
+      local fd, err = io.open(path, mode)
+      if fd then return fd, path end
+      tried[#tried+1] = "can't open "..err
    end
    return nil, table.concat(tried, "\n")
 end
@@ -26,7 +42,7 @@ function util.stacklevel()
       end
    end
    if not info then
-      return nil, "could not determine the code file on the callstack to look up as a luarocks module"
+      return nil, "could not determine the code file on the callstack to look up"
    else
       return level - 1, info.source  -- use -1 to substract the call to this function
    end

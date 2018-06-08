@@ -8,11 +8,12 @@ local openers = {
    "datafile.openers.luarocks",
    "datafile.openers.caller",
    "datafile.openers.xdg",
-   "datafile.openers.unix_config",
+   "datafile.openers.unix",
+   "datafile.openers.windows",
 }
 
 -- Install openers, if present
-for i, opener in ipairs(openers) do
+for _, opener in ipairs(openers) do
    local ok, mod = pcall(require, opener)
    if ok then
       if mod.opener then
@@ -22,16 +23,16 @@ for i, opener in ipairs(openers) do
 end
 
 -- Fallback opener
-table.insert(datafile.openers, function(file, mode, context)
+table.insert(datafile.openers, function(file, mode, _)
    return io.open(file, mode)
 end)
 
 function datafile.open(file, mode, context)
    local tried = {}
    for _, opener in ipairs(datafile.openers) do
-      local file, path = opener(file, mode or "r", context)
-      if file then
-         return file, path
+      local fd, path = opener(file, mode or "r", context)
+      if fd then
+         return fd, path
       elseif path then
          tried[#tried+1] = path
       end
@@ -40,9 +41,9 @@ function datafile.open(file, mode, context)
 end
 
 function datafile.path(file, mode, context)
-   local file, path = datafile.open(file, mode or "r", context)
-   if file then
-      file:close()
+   local fd, path = datafile.open(file, mode or "r", context)
+   if fd then
+      fd:close()
       return path
    end
    return nil, path
