@@ -1,19 +1,17 @@
 -- This file was automatically generated for the LuaDist project.
 
 package = "datafile"
-version = "0.2-1"
-
+version = "0.3-1"
 -- LuaDist source
 source = {
-  tag = "0.2-1",
+  tag = "0.3-1",
   url = "git://github.com/LuaDist-testing/datafile.git"
 }
 -- Original source
 -- source = {
 --    url = "git://github.com/hishamhm/datafile.git",
---    tag = "v0.2",
+--    tag = "v0.3"
 -- }
-
 description = {
    summary = "A library for handling paths when loading data files",
    detailed = [[
@@ -21,32 +19,30 @@ description = {
       when loading resource files in Lua modules.
    ]],
    homepage = "http://github.com/hishamhm/datafile",
-   license = "MIT/X11",
+   license = "MIT/X11"
 }
-
 dependencies = {
-   "lua >= 5.1",
+   "lua >= 5.1"
 }
-
 build = {
    type = "builtin",
    modules = {
-      ["datafile"] = "datafile.lua",
-      ["datafile.util"] = "datafile/util.lua",
-      ["datafile.openers.luarocks"] = "datafile/openers/luarocks.lua",
+      datafile = "datafile.lua",
       ["datafile.openers.caller"] = "datafile/openers/caller.lua",
+      ["datafile.openers.luarocks"] = "datafile/openers/luarocks.lua",
+      ["datafile.util"] = "datafile/util.lua"
    },
    platforms = {
       unix = {
          modules = {
-            ["datafile.openers.xdg"] = "datafile/openers/xdg.lua",
             ["datafile.openers.unix"] = "datafile/openers/unix.lua",
+            ["datafile.openers.xdg"] = "datafile/openers/xdg.lua"
          }
       },
       windows = {
          modules = {
-            ["datafile.openers.windows"] = "datafile/openers/windows.lua",
+            ["datafile.openers.windows"] = "datafile/openers/windows.lua"
          }
-      },
+      }
    }
 }
